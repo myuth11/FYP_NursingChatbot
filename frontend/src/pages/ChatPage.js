@@ -54,7 +54,10 @@ const ChatPage = () => {
     try {
       const response = await fetch(`${process.env.REACT_APP_CHAT_API_URL}/chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'ngrok-skip-browser-warning': 'true'
+        },
         body: JSON.stringify({ question: text })
       });
 

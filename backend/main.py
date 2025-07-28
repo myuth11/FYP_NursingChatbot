@@ -106,39 +106,61 @@ from transformers import pipeline, AutoTokenizer, AutoModelForCausalLM, BitsAndB
 
 from langchain_community.document_loaders import CSVLoader, PyPDFLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-# from pymongo import MongoClient
+from pymongo import MongoClient
 import torch
-# gridfs
+import gridfs
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import requests
+import bcrypt
 
 # --------------------------- MongoDB Setup ---------------------------
-# try:
-    # Try to connect with longer timeout and more verbose error handling
-    # client = MongoClient("mongodb://localhost:27017/",
-    #                     serverSelectionTimeoutMS=10000,
-    #                     connectTimeoutMS=20000)
-    # Verify the connection
-    # client.server_info()
-    # print("Successfully connected to MongoDB")
-    # db = client["my_database"]
-    # fs = gridfs.GridFS(db)
-    # collection = db["csv_files"]
-
-# except Exception as e:
-#     print("\nError: Could not connect to MongoDB. Please make sure MongoDB is installed and running.")
-#     print("To fix this:")
-#     print("1. If MongoDB is not installed:")
-#     print("   - Download MongoDB Community Server from https://www.mongodb.com/try/download/community")
-#     print("   - Install MongoDB as a service during installation")
-#     print("\n2. If MongoDB is installed but not running:")
-#     print("   - Open PowerShell as Administrator")
-#     print("   - Run: net start MongoDB")
-#     print("\nError details:", str(e))
-#     exit(1)
+try:
+    # Use the MongoDB URI from environment variables
+    MONGO_URI = os.getenv("MONGO_URI")
+    if MONGO_URI:
+        client = MongoClient(MONGO_URI)
+        # Test the connection
+        client.admin.command('ping')
+        print("Successfully connected to MongoDB")
+        
+        # Use the database from the URI (recipes)
+        db = client["recipes"]  # Use the existing database name from URI
+        users_collection = db["users"]  # Try users collection first
+        
+        # Check if users collection exists and has documents
+        user_count = users_collection.count_documents({})
+        print(f"Found {user_count} users in 'users' collection")
+        
+        # If no users in 'users' collection, check other common collection names
+        if user_count == 0:
+            collections = db.list_collection_names()
+            print(f"Available collections in database: {collections}")
+            
+            # Try common user collection names
+            for collection_name in ['user', 'accounts', 'auth', 'members']:
+                if collection_name in collections:
+                    test_collection = db[collection_name]
+                    count = test_collection.count_documents({})
+                    if count > 0:
+                        print(f"Found {count} documents in '{collection_name}' collection")
+                        users_collection = test_collection
+                        break
+        
+        print(f"Using database: {db.name}, collection: {users_collection.name}")
+    else:
+        print("Warning: MONGO_URI not found in environment variables")
+        client = None
+        db = None
+        users_collection = None
+except Exception as e:
+    print(f"Error connecting to MongoDB: {e}")
+    print("Falling back to in-memory storage")
+    client = None
+    db = None
+    users_collection = None
 
 # --------------------------- Configuration ---------------------------
 # Optional quantization config - only use if bitsandbytes is available
@@ -408,7 +430,7 @@ def init_chroma_qa():
             generator = pipeline(
                 "text-generation",
                 model="TinyLlama/TinyLlama-1.1B-Chat-v1.0",
-                max_new_tokens=100,  # Reduced for cleaner responses
+                max_new_tokens=128,  # Reduced for cleaner responses
                 do_sample=True,
                 temperature=0.7,
                 top_p=0.9,
@@ -484,7 +506,9 @@ app.add_middleware(
         "http://localhost:3000",
         "https://nurse-frontend.onrender.com",
         "https://nurse-backend-1pve.onrender.com",
-        "https://fyp-ay25s1-nurse-chatbot.onrender.com"
+        "https://fyp-ay25s1-nurse-chatbot.onrender.com",
+        "https://2546d495814a.ngrok-free.app",
+        "https://fyp-nursingchatbot.onrender.com"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -514,6 +538,130 @@ def get_or_initialize_qa_chain():
 
 class QuestionRequest(BaseModel):
     question: str
+
+class UserSignup(BaseModel):
+    email: str
+    password: str
+
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+# Simple in-memory user storage (fallback if MongoDB is not available)
+users_db = {}
+
+@app.get("/")
+async def root():
+    """Root endpoint to test if backend is working"""
+    return {
+        "message": "NurseAid Backend is running!",
+        "status": "healthy",
+        "database": "MongoDB" if users_collection is not None else "In-memory",
+        "endpoints": ["/chat", "/debug", "/init_qa", "/api/user/signup", "/api/user/login"]
+    }
+
+@app.post("/api/user/signup")
+async def signup(user: UserSignup):
+    """User signup endpoint"""
+    try:
+        # Check if using MongoDB or fallback storage
+        if users_collection is not None:
+            # MongoDB implementation
+            existing_user = users_collection.find_one({"email": user.email})
+            if existing_user:
+                raise HTTPException(status_code=400, detail="User already exists")
+            
+            # Insert new user
+            user_doc = {
+                "email": user.email,
+                "password": user.password  # In production, hash this!
+            }
+            users_collection.insert_one(user_doc)
+            print(f"User {user.email} created in MongoDB")
+        else:
+            # Fallback to in-memory storage
+            if user.email in users_db:
+                raise HTTPException(status_code=400, detail="User already exists")
+            users_db[user.email] = {
+                "email": user.email,
+                "password": user.password
+            }
+            print(f"User {user.email} created in memory")
+        
+        return {
+            "email": user.email,
+            "message": "User created successfully"
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Signup error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/user/login")
+async def login(user: UserLogin):
+    """User login endpoint"""
+    try:
+        print(f"Login attempt for email: {user.email}")
+        
+        # Check if using MongoDB or fallback storage
+        if users_collection is not None:
+            # MongoDB implementation
+            stored_user = users_collection.find_one({"email": user.email})
+            print(f"MongoDB lookup result: {stored_user is not None}")
+            
+            if not stored_user:
+                raise HTTPException(status_code=400, detail="User not found. Please sign up first.")
+            
+            # Debug: Print user document structure (without password for security)
+            user_fields = list(stored_user.keys())
+            print(f"User document fields: {user_fields}")
+            
+            # Check if password field exists and compare
+            if "password" not in stored_user:
+                print("Error: 'password' field not found in user document")
+                raise HTTPException(status_code=500, detail="User data structure error")
+            
+            stored_password = stored_user["password"]
+            provided_password = user.password
+            print(f"Password comparison - Stored length: {len(stored_password)}, Provided length: {len(provided_password)}")
+            
+            # Check if password is hashed (length 60 suggests bcrypt)
+            if len(stored_password) == 60 and stored_password.startswith(('$2a$', '$2b$', '$2y$')):
+                # Hashed password - use bcrypt to verify
+                password_match = bcrypt.checkpw(provided_password.encode('utf-8'), stored_password.encode('utf-8'))
+                print(f"Bcrypt password verification: {password_match}")
+            else:
+                # Plain text password comparison
+                password_match = stored_password == provided_password
+                print(f"Plain text password match: {password_match}")
+            
+            if not password_match:
+                raise HTTPException(status_code=400, detail="Invalid password")
+                
+            print(f"Successful MongoDB login for user {user.email}")
+        else:
+            # Fallback to in-memory storage
+            print(f"Current users in memory: {list(users_db.keys())}")
+            
+            if user.email not in users_db:
+                raise HTTPException(status_code=400, detail="User not found. Please sign up first.")
+            
+            stored_user = users_db[user.email]
+            if stored_user["password"] != user.password:
+                raise HTTPException(status_code=400, detail="Invalid password")
+                
+            print(f"Successful memory login for user {user.email}")
+        
+        return {
+            "email": user.email,
+            "message": "Login successful"
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Login error: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/debug")
 async def debug_info():

@@ -12,7 +12,10 @@ export const useSignup = () => {
 
         const response = await fetch(`${process.env.REACT_APP_USER_API_URL}/api/user/signup`, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+                'Content-Type': 'application/json',
+                'ngrok-skip-browser-warning': 'true'
+            },
             body: JSON.stringify({email, password})
         })
         const json = await response.json()
