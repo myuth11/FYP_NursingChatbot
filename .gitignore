@@ -1,0 +1,21 @@
+﻿node_modules/
+backend/node_modules/
+frontend/node_modules/
+*.log
+
+# Environment variables
+.env
+backend/.env
+frontend/.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Chroma DB
+chroma_db/
+
+# Large video files
+*.mp4
+frontend/public/*.mp4

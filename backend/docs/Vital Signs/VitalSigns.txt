@@ -1,0 +1,22 @@
+Temperature:
+A fever is considered when body temperature is >=38deg celcius.
+
+It is also important to note that heart rate increases with fever in children. For every 1 deg celcius increase in body temperature, the heart rate increases by 10BPM
+
+
+Pain Score:
+Types of pain scores
+
+Pain score >=4 to recheck the next hour.
+Pain score < 4 to check per shift.
+Offer analgesia where applicable.
+
+Pain out of proportion is a red flag and to be reported!
+
+
+Oxygen Saturation:
+Oxygen saturation is measured via a finger probe on a pulse oximetry machine. 
+
+Unless otherwise stated, oxygen saturation should be kept >=95% when patient is awake and >=93% when patient is asleep. 
+
+Inform senior nurse / doctor is patient has desaturation.

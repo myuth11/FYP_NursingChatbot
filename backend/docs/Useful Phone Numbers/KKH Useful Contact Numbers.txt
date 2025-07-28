@@ -1,0 +1,54 @@
+Admission: 6394-1200
+Appt: 6394-4333
+Bloodbank: 6394-1376
+BTS MO: +6591864133
+Cardiac Center/Echo Room: 8880/ 5890
+CICU Counter: 6394-1778
+CSDU: 6394-1797
+EEG Lab: 6394-2133
+IT Support: 6394-1800
+Lab. Biochem-1: 6394-1383
+Lab. Biochem-2: 6394-1375
+Lab. Cytogenetics: 6394-1391
+Lab. Cytology: 6394-1385
+Lab. Haematology: 6394-1373
+Lab. IEM Screen: 6394-5049
+Lab. Immunochemistry: 6394-1375
+Lab. Main Reception-1: 6394-1352
+Lab. Main Reception-2: 6394-1354
+Lab. MicroB Molecular: 6394-1382
+Lab. MicroB-1: 6394-1388
+Lab. MicroB-2: 6394-1389
+MSW: 6394-1029
+Nursery W31: 6394-6010
+Pharmacy (CICU/NN): 6394-1447
+Pharmacy (Drug Info): 6394-2459
+Pharmacy (Inpt): 1773/4
+Pharmacy (Night): 6394-2209
+Pharmacy (On Call): +6591690634
+Pharmacy (Onco): 6394-2147
+Pharmacy (Sat): 6394-1773
+Porter: +6581217929/ +6581217928
+Psychiatry: 6394-8599
+Psychology: 6394-2208
+Pulmonary Function Lab: 6394-2130
+Radio. Angio Suite: 8260/ 8243
+Radio. CT Reception: 6394-2255
+Radio. Fluoroscopy: 6394-2288
+Radio. MRI Reception: 6394-5855
+Radio. MRI Reporting: 6394-1825
+Radio. MRI Room: 6394-5894
+Radio. MRI/CT Fax: 6394-5809
+Radio. Nuclear Med: 6394-2282
+Radio. Portable XRAY (After Office Hours): +6581217854
+Radio. Portable XRAY (Office Hours): +6581217859
+Radio. Reception-1: 6394-2250
+Radio. Reception-2: 6394-2253
+Radio. Sorting: 6394-2584
+Radio. Ultrasound: 6394-8731
+Radio. XRay: 6394-2263
+Radiographer CT: +6581217860
+Radiographer On Call: 1178/ +6581217854
+Sleep Lab: 6394-2086
+TB T Spot Lab TTSH: +6563578968
+TPN: 6394-2613

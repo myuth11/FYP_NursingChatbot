@@ -1,0 +1,350 @@
+/* Tabs Styling */
+.tabs-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.tabs-title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.tabs-nav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.tabs-nav-container {
+  display: flex;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  padding: 4px;
+  gap: 0;
+}
+
+.tab-button {
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: transparent;
+}
+
+.tab-button.active {
+  background-color: white;
+  color: #2563eb;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid #2563eb;
+}
+
+.tab-button:not(.active) {
+  color: #6b7280;
+}
+
+.tab-button:not(.active):hover {
+  color: #374151;
+  background-color: rgba(243, 244, 246, 0.5);
+}
+
+.tab-content {
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Calculator Card Styling */
+.calculator-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  padding: 24px;
+  max-width: 448px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.calculator-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #1f2937;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+/* Form Input Group */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 8px;
+}
+
+.form-input, .fluid-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-input:focus, .fluid-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-input:read-only {
+  background-color: #f9fafb;
+  color: #374151;
+  border-color: #e5e7eb;
+}
+
+/* Checkbox Styling */
+.fluid-checkbox {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.fluid-checkbox input[type="checkbox"] {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+.button-group, .fluid-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.btn, .fluid-btn-primary, .fluid-btn-secondary {
+  flex: 1;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary, .fluid-btn-primary {
+  background-color: #2563eb;
+  color: white;
+}
+
+.btn-primary:hover, .fluid-btn-primary:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-secondary, .fluid-btn-secondary {
+  background-color: #6b7280;
+  color: white;
+}
+
+.btn-secondary:hover, .fluid-btn-secondary:hover {
+  background-color: #4b5563;
+}
+
+/* Result Card Styling */
+.result-card {
+  margin-top: 24px;
+  padding: 16px;
+  background-color: #eff6ff;
+  border-radius: 6px;
+  border: 1px solid #bfdbfe;
+}
+
+.result-card p {
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #1f2937;
+}
+
+.result-card p:last-child {
+  margin-bottom: 0;
+}
+
+.result-card .text-sm {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 12px;
+}
+
+.result-card .text-gray-600 {
+  color: #6b7280;
+}
+
+.result-card .mt-2 {
+  margin-top: 8px;
+}
+
+.result-card .mt-3 {
+  margin-top: 12px;
+}
+
+.warning-message {
+  background-color: #fef3c7;
+  border: 1px solid #fbbf24;
+  color: #92400e;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.clinical-info {
+  margin-top: 24px;
+  padding: 16px;
+  background-color: #eff6ff;
+  border-radius: 6px;
+}
+
+.clinical-info h4 {
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.clinical-info-content {
+  font-size: 14px;
+  color: #374151;
+}
+
+.clinical-info-content p {
+  margin-bottom: 4px;
+}
+
+/* Placeholder Styling */
+.placeholder-container {
+  text-align: center;
+  padding: 48px 0;
+}
+
+.placeholder-icon {
+  margin: 0 auto 16px;
+  height: 48px;
+  width: 48px;
+  color: #9ca3af;
+}
+
+.placeholder-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 8px;
+}
+
+.placeholder-description {
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.placeholder-features {
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 6px;
+  padding: 16px;
+  text-align: left;
+  display: inline-block;
+  max-width: 320px;
+}
+
+.placeholder-features h5 {
+  font-weight: 500;
+  color: #0c4a6e;
+  margin-bottom: 8px;
+}
+
+.placeholder-features ul {
+  font-size: 14px;
+  color: #0369a1;
+  list-style: none;
+  padding: 0;
+}
+
+.placeholder-features li {
+  margin-bottom: 4px;
+}
+
+.placeholder-features.neonatal {
+  background-color: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.placeholder-features.neonatal h5 {
+  color: #1e40af;
+}
+
+.placeholder-features.neonatal ul {
+  color: #1d4ed8;
+}
+
+.placeholder-features.dehydration {
+  background-color: #fff7ed;
+  border-color: #fed7aa;
+}
+
+.placeholder-features.dehydration h5 {
+  color: #c2410c;
+}
+
+.placeholder-features.dehydration ul {
+  color: #ea580c;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .tabs-container {
+    padding: 16px;
+  }
+  
+  .tabs-title {
+    font-size: 1.75rem;
+  }
+  
+  .tabs-nav-container {
+    flex-direction: column;
+    width: 100%;
+  }
+  
+  .tab-button {
+    width: 100%;
+    margin-bottom: 4px;
+  }
+  
+  .calculator-card {
+    padding: 16px;
+  }
+}
