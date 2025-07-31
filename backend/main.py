@@ -507,7 +507,7 @@ app.add_middleware(
         "https://nurse-frontend.onrender.com",
         "https://nurse-backend-1pve.onrender.com",
         "https://fyp-ay25s1-nurse-chatbot.onrender.com",
-        "https://2546d495814a.ngrok-free.app",
+        "https://3d3dc713b4cd.ngrok-free.app",
         "https://fyp-nursingchatbot.onrender.com"
     ],
     allow_credentials=True,
